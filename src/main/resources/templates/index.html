@@ -12,7 +12,7 @@
 <!-- NavBar Component Code -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
   <div class="container">
-    <a class="navbar-brand" href="Dashboard.html">
+    <a class="navbar-brand" href="/">
       Personal Project Management Tool
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="mobile-nav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/dashboard">
+          <a class="nav-link" href="/">
             Dashboard
           </a>
         </li>
@@ -30,12 +30,12 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link " href="register.html">
+          <a class="nav-link " href="/register">
             Sign Up
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="login.html">
+          <a class="nav-link" href="/login">
             Login
           </a>
         </li>
@@ -43,7 +43,6 @@
     </div>
   </div>
 </nav>
-
 <!-- Dashboard Component (Project Item included) -->
 
 <div class="projects">
@@ -74,6 +73,50 @@
 <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"-->
 <!--        crossorigin="anonymous"></script>-->
 <!--<script src="runtime-es2015.1d8c39bf8af8ca7126e9.js" type="module"></script><script src="polyfills-es2015.824ed6a46aafd5221e6b.js" type="module"></script><script src="runtime-es5.bbf092e00283d094f4df.js" nomodule defer></script><script src="polyfills-es5.920399604bb2dc2cacae.js" nomodule defer></script><script src="main-es2015.d24c3210c2f9f789924e.js" type="module"></script><script src="main-es5.42c3aea61715d7e8f35d.js" nomodule defer></script></body>-->
-<script src="js/index.js"></script>
+<!--<script src="/js/index.js"></script>-->
+<table class="table">
+  <thead>
+  <th>Project Name</th>
+  <th>Project Description </th>
+  </thead>
+  <tbody id="project-table">
+
+  </tbody>
+</table>
+<script>
+const url =  "https://spring-react-app-sj.herokuapp.com/api/project/all";
+let projectTable = document.querySelector('#project-table')
+console.log(projectTable);
+  try {
+    fetchAllProjects();
+} catch( error) {
+    console.error(error)
+}
+
+async function fetchAllProjects(){
+    const response = await fetch(url, {
+        headers: {
+            'Content-Type': 'application/json'
+        }});
+
+        let json = await response.json();
+        appendTickets(json);
+
+    }
+
+    function appendTickets(responseArray){
+      console.log(responseArray[1])
+      for(item of responseArray){
+        console.log(responseArray);
+        //   projectTable.insertAdjacentElement(0,row);
+<!--        projectTable.append(row);-->
+  let row1 = projectTable.insertRow(0);
+    let cell1 = row1.insertCell(0)
+    cell1.innerHTML= `<td>${item.projectName}</td>`
+    let cell2 = row1.insertCell(1)
+    cell2.innerHTML = `<td>${item.description}</td>`
+      }
+    }
+</script>
 </body>
 </html>

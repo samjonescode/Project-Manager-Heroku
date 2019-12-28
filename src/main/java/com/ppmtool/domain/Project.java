@@ -1,6 +1,7 @@
 package com.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -29,9 +30,25 @@ public class Project {
 	private Date created_at;
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date updated_at;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private User user;
+	private String projectLeader;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project") //the project is the owner.. if it's gone, the other dependents disappear
+	@JsonIgnore
+	private Backlog backlog;
+
 	public Project() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Backlog getBacklog() {
+		return backlog;
+	}
+
+	public void setBacklog(Backlog backlog) {
+		this.backlog = backlog;
 	}
 
 	@PrePersist
@@ -105,6 +122,22 @@ public class Project {
 
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getProjectLeader() {
+		return projectLeader;
+	}
+
+	public void setProjectLeader(String projectLeader) {
+		this.projectLeader = projectLeader;
 	}
 
 	@Override
