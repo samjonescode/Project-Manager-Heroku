@@ -9,6 +9,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -71,14 +72,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers(SIGN_UP_URLS).permitAll() // permit access to user urls without auth/sign in
-                .antMatchers(H2_URL).permitAll()
-                .antMatchers("").permitAll()//permit access to h2 without sign in
+                .antMatchers(H2_URL).permitAll() //permit access to h2 without sign in
                 .anyRequest().authenticated(); //other than these routes everything needs authentication
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 
-
-
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+//        super.configure(web);
+        web.ignoring().antMatchers("/");
+    }
 }
