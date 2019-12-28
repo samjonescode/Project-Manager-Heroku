@@ -72,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers(SIGN_UP_URLS).permitAll() // permit access to user urls without auth/sign in
-                .antMatchers(H2_URL).permitAll() //permit access to h2 without sign in
+                .antMatchers(H2_URL).permitAll()
+                .antMatchers("/").anonymous()//permit access to h2 without sign in
                 .anyRequest().authenticated(); //other than these routes everything needs authentication
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
